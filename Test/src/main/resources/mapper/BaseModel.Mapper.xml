@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.base.dao.impl.BaseDaoImpl">
+	
+    <select id="selectBaseModelByKey" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        select 
+		<foreach collection="modelFields" item="item" open="" separator="," close="">`${item}`</foreach>
+ 		from `${tableName}` where `${keyField}` = #{keyValue}	
+    </select>
+	
+    <delete id="deleteBaseModelByKey" parameterType="java.util.HashMap">
+        delete from `${tableName}` where `${keyField}`= #{keyValue}
+    </delete>
+
+	<insert id="insertBaseModelByKey" parameterType="java.util.HashMap">
+		insert into `${tableName}`
+		<foreach collection="modelFields" item="item" open="(" separator="," close=")">`${item}`</foreach>
+		values
+		<foreach collection="modelValues" item="itemVal" open="(" separator="," close=")">#{itemVal}</foreach>
+	</insert>
+
+	<update id="updateBaseModelByKey" parameterType="java.util.HashMap">
+		update `${tableName}` set 
+		<foreach collection="modelEntries" item="item" open="" separator="," close="">`${item.key}`=#{item.value}</foreach>
+		where `${keyField}` = #{keyValue}
+	</update>
+	
+    <select id="findDbTime" resultType="java.util.Date">
+     	select current_timestamp from dual
+    </select>
+	
+</mapper>
